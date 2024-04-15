@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notes App</title>
+
+    <!-- Favicons -->
+    <link rel="stylesheet" href="/src/styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <app-bar></app-bar>
+    </header>
+
+    <main>
+      <div class="container">
+        <section-with-title id="note" class="note" title="Note List">
+          <div id="formInputContainer" class="form-input-container">
+            <form-input></form-input>
+          </div>
+
+          <div id="noteListContainer" class="note-list-container">
+            <note-list></note-list>
+          </div>
+        </section-with-title>
+      </div>
+    </main>
+
+    <footer>
+      <footer-bar></footer-bar>
+    </footer>
+
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>
