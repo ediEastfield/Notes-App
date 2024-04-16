@@ -1,61 +1,61 @@
 class FormInput extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
+  _shadowRoot = null;
+  _style = null;
 
-    _submitEvent = 'submit';
-    _addNoteEvent = 'addNote';
+  _submitEvent = "submit";
+  _addNoteEvent = "addNote";
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot = this.attachShadow({ mode: 'open'});
-        this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
-        this.render();
-    }
+    this.render();
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    connectedCallback() {
-        this._shadowRoot
-          .querySelector('form')
-          .addEventListener('submit', (event) => this._onFormSubmit(event, this));
-        this.addEventListener(this._submitEvent, this._onFormInputSubmit);
-    }
+  connectedCallback() {
+    this._shadowRoot
+      .querySelector("form")
+      .addEventListener("submit", (event) => this._onFormSubmit(event, this));
+    this.addEventListener(this._submitEvent, this._onFormInputSubmit);
+  }
 
-    disconnectedCallback() {
-        this._shadowRoot
-          .querySelector('form')
-          .removeEventListener('submit', (event) => this._onFormSubmit(event, this));
-        this.removeEventListener(this._submitEvent, this._onFormInputSubmit);
-    }
+  disconnectedCallback() {
+    this._shadowRoot
+      .querySelector("form")
+      .removeEventListener("submit", (event) =>
+        this._onFormSubmit(event, this),
+      );
+    this.removeEventListener(this._submitEvent, this._onFormInputSubmit);
+  }
 
-    _onFormSubmit(event, formInputInstance) {
-        formInputInstance.dispatchEvent(new CustomEvent('submit'));
+  _onFormSubmit(event, formInputInstance) {
+    formInputInstance.dispatchEvent(new CustomEvent("submit"));
 
-        event.preventDefault();
-    }
+    event.preventDefault();
+  }
 
-    _onFormInputSubmit() {
-        const title = this._shadowRoot.querySelector('#title').value;
-        const body = this._shadowRoot.querySelector('#body').value;
+  _onFormInputSubmit() {
+    const title = this._shadowRoot.querySelector("#title").value;
+    const body = this._shadowRoot.querySelector("#body").value;
 
-        this.dispatchEvent(
-            new CustomEvent(this._addNoteEvent, {
-                detail: { title, body },
-                bubbles: true,
-            }),
-        );
+    this.dispatchEvent(
+      new CustomEvent(this._addNoteEvent, {
+        detail: { title, body },
+        bubbles: true,
+      }),
+    );
 
-        this._shadowRoot
-          .querySelector('form')
-          .reset();
-    }
+    this._shadowRoot.querySelector("form").reset();
+  }
 
-    _updateStyle() {
-        this._style.textContent = `
+  _updateStyle() {
+    this._style.textContent = `
             :host {
                 display: inline;
             }
@@ -107,14 +107,14 @@ class FormInput extends HTMLElement {
                 cursor: pointer;
             }
         `;
-    }
+  }
 
-    render() {
-        this._emptyContent();
-        this._updateStyle();
+  render() {
+    this._emptyContent();
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
             <div class="floating-form">
                 <form id="inputForm" class="input-form">
                     <div class="form-group">
@@ -130,7 +130,7 @@ class FormInput extends HTMLElement {
                 </form>
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('form-input', FormInput);
+customElements.define("form-input", FormInput);

@@ -1,42 +1,51 @@
-import Utils from '../utils.js';
-import Notes from '../data/local/notes.js';
+import Utils from "../utils.js";
+import NotesApi from "../data/remote/notes-api.js";
 
 const home = () => {
-  const inputFormElement = document.querySelector('form-input');
+  const inputFormElement = document.querySelector("form-input");
 
-  const noteListContainerElement = document.querySelector('#noteListContainer');
-  const noteListElement = noteListContainerElement.querySelector('note-list');
+  const noteListContainerElement = document.querySelector("#noteListContainer");
+  const noteLoadingElement = noteListContainerElement.querySelector('.note-loading')
+  const noteErrorElement = noteListContainerElement.querySelector('note-error');
+  const noteListElement = noteListContainerElement.querySelector("note-list");
 
-  const showNote = () => {
+  const showNote = async () => {
+    showLoading();
 
-    displayResult();
+    try {
+      const notes = await NotesApi.getNotes();
+      displayResult(notes);
+      
+      showNoteList();
+    } catch (error) {
+      noteErrorElement.textContent = error.message;
+      showNoteError();
+    }
 
-    showNoteList();
   };
 
   const onAddNoteHandler = (event) => {
     event.preventDefault();
 
-    const { title , body } = event.detail;
+    const { title, body } = event.detail;
 
     const newNote = {
-      id: `note-${Date.now()}`,
       title: title,
       body: body,
-      createdAt: new Date().toISOString(),
-      archived: false
     };
 
-    Notes.addNote(newNote);
+    NotesApi.addNote(newNote);
     showNote();
-  }
+  };
 
-  const displayResult = () => {
-    const notes = Notes.getAll();
+  const displayResult = (notes) => {
+
     const noteItemElements = notes.map((note) => {
-      const noteItemElement = document.createElement('note-item');
+      const noteItemElement = document.createElement("note-item");
       noteItemElement.note = note;
 
+      console.log(note.id);
+      
       return noteItemElement;
     });
 
@@ -51,7 +60,21 @@ const home = () => {
     Utils.showElement(noteListElement);
   };
 
-  inputFormElement.addEventListener('addNote', onAddNoteHandler);
+  const showLoading = () => {
+    Array.from(noteListContainerElement.children).forEach((element) => {
+      Utils.hideElement(element);
+    });
+    Utils.showElement(noteLoadingElement);
+  };
+
+  const showNoteError = () => {
+    Array.from(noteListContainerElement.children).forEach((element) => {
+      Utils.hideElement(element);
+    });
+    Utils.showElement(noteErrorElement);
+  }
+
+  inputFormElement.addEventListener("addNote", onAddNoteHandler);
   showNote();
 };
 

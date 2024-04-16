@@ -5,8 +5,8 @@ class AppBar extends HTMLElement {
   constructor() {
     super();
 
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
   }
 
   _updateStyle() {
@@ -33,7 +33,7 @@ class AppBar extends HTMLElement {
   }
 
   _emptyContent() {
-    this._shadowRoot.innerHTML = '';
+    this._shadowRoot.innerHTML = "";
   }
 
   connectedCallback() {
@@ -53,4 +53,4 @@ class AppBar extends HTMLElement {
   }
 }
 
-customElements.define('app-bar', AppBar);
+customElements.define("app-bar", AppBar);

@@ -1,7 +1,7 @@
 class NoteItem extends HTMLElement {
   _shadowRoot = null;
   _style = null;
-  _club = {
+  _note = {
     idNote: null,
     title: null,
     body: null,
@@ -10,12 +10,12 @@ class NoteItem extends HTMLElement {
   constructor() {
     super();
 
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
   }
 
   _emptyContent() {
-    this._shadowRoot.innerHTML = '';
+    this._shadowRoot.innerHTML = "";
   }
 
   set note(value) {
@@ -57,6 +57,17 @@ class NoteItem extends HTMLElement {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 5; /* number of lines to show */
       }
+
+      .delete-button{
+        background-color: cornflowerblue;
+        color: white;
+                border: 0;
+                border-radius: 5px;
+                display: block;
+                width: 50%;
+                padding: 8px;
+                cursor: pointer;
+      }
     `;
   }
 
@@ -74,10 +85,13 @@ class NoteItem extends HTMLElement {
           <div class="note-info__description">
             <p>${this._note.body}</p>
           </div>
+
+          <button type="button" class="delete-button" id="deleteButton">delete</button>
         </div>
+        
       </div>
     `;
   }
 }
 
-customElements.define('note-item', NoteItem);
+customElements.define("note-item", NoteItem);
