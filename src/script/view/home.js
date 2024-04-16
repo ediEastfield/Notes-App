@@ -7,10 +7,9 @@ const home = () => {
   const noteListContainerElement = document.querySelector('#noteListContainer');
   const noteListElement = noteListContainerElement.querySelector('note-list');
 
-  const showNote = (newNote) => {
+  const showNote = () => {
 
-    const result = Notes.getAll();
-    displayResult(result);
+    displayResult();
 
     showNoteList();
   };
@@ -24,15 +23,16 @@ const home = () => {
       id: `note-${Date.now()}`,
       title: title,
       body: body,
-      createAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       archived: false
     };
 
-    console.log('test');
-    showNote(newNote);
+    Notes.addNote(newNote);
+    showNote();
   }
 
-  const displayResult = (notes) => {
+  const displayResult = () => {
+    const notes = Notes.getAll();
     const noteItemElements = notes.map((note) => {
       const noteItemElement = document.createElement('note-item');
       noteItemElement.note = note;
@@ -51,8 +51,8 @@ const home = () => {
     Utils.showElement(noteListElement);
   };
 
-  showNote();
   inputFormElement.addEventListener('addNote', onAddNoteHandler);
+  showNote();
 };
 
 export default home;

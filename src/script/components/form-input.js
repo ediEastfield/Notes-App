@@ -22,25 +22,25 @@ class FormInput extends HTMLElement {
         this._shadowRoot
           .querySelector('form')
           .addEventListener('submit', (event) => this._onFormSubmit(event, this));
-        this.addEventListener(this._addNoteEvent, this._onInputFormSubmit);
+        this.addEventListener(this._submitEvent, this._onFormInputSubmit);
     }
 
     disconnectedCallback() {
         this._shadowRoot
           .querySelector('form')
           .removeEventListener('submit', (event) => this._onFormSubmit(event, this));
-        this.removeEventListener(this._submitEvent, this._onInputFormSubmit);
+        this.removeEventListener(this._submitEvent, this._onFormInputSubmit);
     }
 
-    _onFormSubmit(event, inputFormInstance) {
-        inputFormInstance.dispatchEvent(new CustomEvent('submit'));
+    _onFormSubmit(event, formInputInstance) {
+        formInputInstance.dispatchEvent(new CustomEvent('submit'));
 
         event.preventDefault();
     }
 
-    _onInputFormSubmit() {
-        const title = this._shadowRoot.querySelector('input#title').value;
-        const body = this._shadowRoot.querySelector('input#body').value;
+    _onFormInputSubmit() {
+        const title = this._shadowRoot.querySelector('#title').value;
+        const body = this._shadowRoot.querySelector('#body').value;
 
         this.dispatchEvent(
             new CustomEvent(this._addNoteEvent, {
@@ -48,6 +48,10 @@ class FormInput extends HTMLElement {
                 bubbles: true,
             }),
         );
+
+        this._shadowRoot
+          .querySelector('form')
+          .reset();
     }
 
     _updateStyle() {
@@ -76,6 +80,15 @@ class FormInput extends HTMLElement {
                 width: 90%;
                 padding: 8px;
                 border-radius: 5px;
+            }
+
+            .input-form .form-group textarea {
+                display: block;
+                width: 90%;
+                padding: 8px;
+                border-radius: 5px;
+                resize: vertical;
+                min-height: 100px;
             }
 
             .input-form .form-group label {
@@ -109,8 +122,8 @@ class FormInput extends HTMLElement {
                         <input id="title" name="title" type="text" />
                     </div>
                     <div class="form-group">
-                        <label for="body">Body(isi)</label>
-                        <input id="body" name="body" type="text" />
+                        <label for="body">Body(isi)</label><br>
+                        <textarea id="body" name="body" rows="4" cols="50" required minlength="0" maxlength="500"></textarea><br><br>
                     </div>
 
                     <button>Masukkan catatan</button>
