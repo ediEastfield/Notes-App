@@ -29,12 +29,12 @@ class NoteItem extends HTMLElement {
     return this._note;
   }
 
-  listenDeleteButton() {
-    const deleteButton = this._shadowRoot.getElementById("deleteButton");
-    
-    deleteButton.addEventListener("click", () => {
-      this.dispatchEvent(new CustomEvent("delete-note"));
-    });
+  connectedCallback() {
+    this._shadowRoot
+      .getElementById("deleteButton")
+      .addEventListener("click", () => {
+        this.dispatchEvent(new CustomEvent("deleteNote"));
+      });
   }
 
   _updateStyle() {

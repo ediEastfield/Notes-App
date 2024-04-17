@@ -5,8 +5,9 @@ const home = () => {
   const inputFormElement = document.querySelector("form-input");
 
   const noteListContainerElement = document.querySelector("#noteListContainer");
-  const noteLoadingElement = noteListContainerElement.querySelector('.note-loading')
-  const noteErrorElement = noteListContainerElement.querySelector('note-error');
+  const noteLoadingElement =
+    noteListContainerElement.querySelector(".note-loading");
+  const noteErrorElement = noteListContainerElement.querySelector("note-error");
   const noteListElement = noteListContainerElement.querySelector("note-list");
 
   const showNote = async () => {
@@ -15,13 +16,12 @@ const home = () => {
     try {
       const notes = await NotesApi.getNotes();
       displayResult(notes);
-      
+
       showNoteList();
     } catch (error) {
       noteErrorElement.textContent = error.message;
       showNoteError();
     }
-
   };
 
   const onAddNoteHandler = async (event) => {
@@ -38,20 +38,26 @@ const home = () => {
       await NotesApi.addNote(newNote);
       showNote();
     } catch (error) {
-      console.error(error)
+      console.error(error);
+    }
+  };
+
+  const onDeleteNoteHandler = async (noteId) => {
+    try {
+      await NotesApi.deleteNote(noteId);
+      showNote();
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const displayResult = (notes) => {
-
     const noteItemElements = notes.map((note) => {
       const noteItemElement = document.createElement("note-item");
       noteItemElement.note = note;
-      
-      noteItemElement.addEventListener("delete-note", () => {
-        console.log("delete button is clicked", note.id);  
 
-        NotesApi.deleteNote(note.id);
+      noteItemElement.addEventListener("deleteNote", () => {
+        onDeleteNoteHandler(note.id);
       });
 
       return noteItemElement;
@@ -80,7 +86,7 @@ const home = () => {
       Utils.hideElement(element);
     });
     Utils.showElement(noteErrorElement);
-  }
+  };
 
   inputFormElement.addEventListener("addNote", onAddNoteHandler);
   showNote();

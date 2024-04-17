@@ -1,41 +1,41 @@
 class NoteError extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
+  _shadowRoot = null;
+  _style = null;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot=this.attachShadow({mode:'open'});
-        this._style=document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
-        this.render();
-    }
+    this.render();
+  }
 
-    _updateStyle() {
-        this.style.textContent = `
+  _updateStyle() {
+    this.style.textContent = `
         .placeholder{
             font-weight:lighter;
             color:rgba(0,0,0,0.5);
         }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    render() {
-        this._emptyContent();
-        this._updateStyle();
+  render() {
+    this._emptyContent();
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
         <div>
         <h2 class="placeholder">Error</h2>
         <slot></slot>
         </div>
         `;
-    }
+  }
 }
 
-customElements.define('note-error',NoteError);
+customElements.define("note-error", NoteError);
