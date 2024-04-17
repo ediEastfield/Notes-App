@@ -29,6 +29,14 @@ class NoteItem extends HTMLElement {
     return this._note;
   }
 
+  listenDeleteButton() {
+    const deleteButton = this._shadowRoot.getElementById("deleteButton");
+    
+    deleteButton.addEventListener("click", () => {
+      this.dispatchEvent(new CustomEvent("delete-note"));
+    });
+  }
+
   _updateStyle() {
     this._style.textContent = `
       :host {
@@ -79,16 +87,15 @@ class NoteItem extends HTMLElement {
     this._shadowRoot.innerHTML += `
       <div class="card">
         <div class="note-info">
-          <div class="note-info__title">
+          <div class="note-info__title" id="title">
             <h2>${this._note.title}</h2>
           </div>
           <div class="note-info__description">
             <p>${this._note.body}</p>
           </div>
 
-          <button type="button" class="delete-button" id="deleteButton">delete</button>
+          <button class="delete-button" id="deleteButton">delete</button>
         </div>
-        
       </div>
     `;
   }

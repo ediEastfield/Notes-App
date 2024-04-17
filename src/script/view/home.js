@@ -24,7 +24,7 @@ const home = () => {
 
   };
 
-  const onAddNoteHandler = (event) => {
+  const onAddNoteHandler = async (event) => {
     event.preventDefault();
 
     const { title, body } = event.detail;
@@ -34,8 +34,12 @@ const home = () => {
       body: body,
     };
 
-    NotesApi.addNote(newNote);
-    showNote();
+    try {
+      await NotesApi.addNote(newNote);
+      showNote();
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const displayResult = (notes) => {
@@ -43,9 +47,13 @@ const home = () => {
     const noteItemElements = notes.map((note) => {
       const noteItemElement = document.createElement("note-item");
       noteItemElement.note = note;
-
-      console.log(note.id);
       
+      noteItemElement.addEventListener("delete-note", () => {
+        console.log("delete button is clicked", note.id);  
+
+        NotesApi.deleteNote(note.id);
+      });
+
       return noteItemElement;
     });
 
